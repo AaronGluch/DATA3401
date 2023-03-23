@@ -9,4 +9,4 @@
  - I've written in R, C, Java, PHP, and Lisp
  - I spend most of my time researching topics that interest me.
 
-[Test image]([https://www.google.com/url?sa=i&url=https%3A%2F%2Fcommons.wikimedia.org%2Fwiki%2FFile%3ATest-Logo.svg&psig=AOvVaw0GezFlmVSp0oY4MA872W7R&ust=1679648334819000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCPixi-bX8f0CFQAAAAAdAAAAABAD])
+[test]([url](https://www.google.com/url?sa=i&url=https%3A%2F%2Fcommons.wikimedia.org%2Fwiki%2FFile%3ATest-Logo.svg&psig=AOvVaw0GezFlmVSp0oY4MA872W7R&ust=1679648334819000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCPixi-bX8f0CFQAAAAAdAAAAABAD))
