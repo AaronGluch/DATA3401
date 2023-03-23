@@ -1,6 +1,6 @@
 # DATA3401
 
- - **Aaron Alexander Gluch
+ - **Aaron Alexander Gluch**
  - aag6336@mavs.uta.edu
  - 1068336
  - Sophomore, I think
