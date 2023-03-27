@@ -1,0 +1,63 @@
+## Name: Aaron Alexander Gluch 
+## ID: 1001806336 / aag6336
+## Class #: 26258
+
+1---------------------------------------------------------------
+
+first = 'Aaron'
+last = 'Gluch'
+def rev(s1, s2):
+    input = [s1, s2]
+    input = ''.join(input)
+    input = list(input)
+    input = input[::-1]
+    output = []
+    for i in range(len(input)):
+        output += input[i] + ' '
+    return ''.join(output)
+                   
+print(rev(first,last))
+
+2---------------------------------------------------------------
+
+name = 'Aaron Gluch'
+major = 'Data Science'
+def pcmd(n, m):
+    output = "My name is " + n + "\nI am a " + m + " major\n------------------------\nThis is my Python string"
+    return(output)
+
+pcmd(name, major)
+
+3---------------------------------------------------------------
+
+1/2 #0.5; 0.5 * 2 = 1
+int(1/2) #0; drops everything after decimal
+int(9/10) #0; drops everything after decimal
+-5**2 #-25; 5 * 5 = 25, and ** is Python's exponent operator, but Python recognizes -5 as a multiplication operation rather than a single integer, and so, following the order of operations, 5**2, as an exponent, is executed first, and the answer is multiplied by -1 to produce -25.
+(-5) ** 2  #25; 5 * 5 = 25, and ** is Python's exponent operator
+10-6/2  #7; 6 is multiplied by -1 and then divided by 2, and the result is then subtracted from 10 due to be written after 10 without any sort of operator to separate them.
+5*4/2*3 #30; Python follows the common core order of operations, under which multiplication and division are considered equivalent, and so 30 is produced by performing the operations from left ot right.
+5*4/2**2*3 #15; exponents come first in the common core order of operations, after which the expression becomes 5*4/4*3; from there, following the common core operations evaluates the operators from left to right, producing 15.
+2^10 #8; ^ is Python's bitwise XOR operator, and so produces unexpected results when confused with **. What x ^ y does is it converts integers x & y to binary, considers 0 to be false and 1 to be true, and then for any given binary digit of the output, the XOR operation is computed upon the inputs to produce it. From there, the output is converted back from binary. XOR in the boolean case returns True if both boolean inputs are the same, and false otherwise.
+
+4---------------------------------------------------------------
+
+def p_ten(x):
+    for i in range(10):
+        print(x)
+
+p_ten('Aaron Alexander Gluch')
+
+5---------------------------------------------------------------
+
+x = [1,2,3,4,'a','b','c','d']
+result = x[1::2]
+print(result)
+
+x = [1,2,3,4,'a','b','c','d']
+result = x[-1::-3]
+print(result)
+
+x = [1,2,3,4,'a','b','c','d']
+result = x[3:-1]
+print(result)
