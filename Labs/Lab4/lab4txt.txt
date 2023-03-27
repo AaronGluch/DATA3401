@@ -1,0 +1,154 @@
+## Name: Aaron Alexander Gluch 
+## ID: 1001806336 / aag6336
+## Class #: 26258
+
+1---------------------------------------------------------------
+
+def list_reverse(lst):
+    output = []
+    for i in range(len(lst)):
+        output.extend([lst[-i-1]])
+    return(output)
+
+print(list_reverse([1,2,3,4,5,6]))
+
+2---------------------------------------------------------------
+
+def string_reverse(string):
+    output = []
+    for i in range(len(string)):
+        output.append(string[-i-1])
+    return(''.join(output))
+
+print(string_reverse('hello'))
+
+3---------------------------------------------------------------
+
+def next_prime(lst):
+    output = lst[:]
+    test = max(lst) + 1
+    while output == lst:
+        is_prime = 1
+        for i in range(len(lst)):
+            if (test % lst[i-1]) == 0:
+                is_prime = 0
+                break
+        if is_prime == 0:
+            test += 1
+        else: 
+            output.append(test)
+    return(output)
+
+def is_twin(lst):
+    if (lst[1] - lst[0]) == 2:
+        return 1
+    else: return 0
+
+def twin_primes(n):
+    twin_list = []
+    prime_list = [2]
+    while len(twin_list) < n:
+        prime_list = next_prime(prime_list)
+        test_twin = [prime_list[-2],prime_list[-1]]
+        if is_twin(test_twin) == 1:
+            twin_list.append(test_twin)
+    return twin_list
+
+print(twin_primes(4))
+
+4---------------------------------------------------------------
+
+def gen_grid(lst):
+    grid = ''
+    for row in lst:
+        grid += ' '
+        for i in range(len(row)):
+            grid += '--- '
+        grid += '\n'
+        for cell in row:
+            grid += '| ' + str(cell) + ' '
+        grid += '|\n'
+    grid += ' '
+    for i in range(len(lst[0])):
+        grid += '--- '
+    grid += '\n'
+    return grid
+
+g = [[1,2,3],[0,1,0],[4,2,4]]
+print(gen_grid(g))
+
+5---------------------------------------------------------------
+
+def diag_test(lst):
+    n = len(lst)
+    d = lst[0][0]
+    t = 1
+    for i in range(n):
+        if lst[i][i] != d:
+            t = 0
+    if t == 1:
+        return True
+    else:
+        return False
+
+diag_test([[1,2,3],[0,1,0],[4,2,4]])
+diag_test([[1,2,3],[0,1,0],[4,2,1]])
+
+6---------------------------------------------------------------
+
+def row_winner(lst):
+    for row in lst:
+        t = 1
+        for cell in row:
+            if cell != row[0]:
+                t = 0
+        if t == 1:
+            return True
+    return False
+
+def col_winner(lst):
+    n = len(lst)
+    for i in range(n):
+        col = [lst[j][i] for j in range(n)]
+        t = 1
+        for cell in col:
+            if cell != col[0]:
+                t = 0
+        if t == 1:
+            return True
+    return False
+
+def diagonal_winner(lst):
+    n = len(lst)
+    diagonal = [lst[i][i] for i in range(n)]
+    anti_diagonal = [lst[i][n-i-1] for i in range(n)]
+    t = 1
+    for cell in diagonal:
+        if cell != diagonal[0]:
+            t = 0
+    if t == 1:
+        return True
+    t = 1
+    for cell in anti_diagonal:
+        if cell != anti_diagonal[0]:
+            t = 0
+    if t == 1:
+        return True
+    return False
+
+lst1 = [[1,0,1],[0,1,1],[1,0,0]]
+print(row_winner(lst1)) # False
+print(col_winner(lst1)) # False
+print(diagonal_winner(lst1)) # True
+
+lst2 = [[1,0,0],[0,1,1],[1,0,0]]
+print(row_winner(lst2)) # False
+print(col_winner(lst2)) # False
+print(diagonal_winner(lst2)) # False
+
+lst3 = [[1,1,1],[1,1,1],[0,1,0]]
+print(row_winner(lst3)) # True
+print(col_winner(lst3)) # True
+print(diagonal_winner(lst3)) #False
+
+---------------------------------------------------------------

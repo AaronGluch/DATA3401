@@ -1,0 +1,129 @@
+## Name: Aaron Alexander Gluch 
+## ID: 1001806336 / aag6336
+## Class #: 26258
+
+1---------------------------------------------------------------
+
+def is_palindrome(string):
+    n = len(string)
+    for i in range(n):
+        if i >= n-i-1:
+            break
+        if string[i] != string[-i-1]:
+            return False
+    return True
+
+print(is_palindrome("racecar"))
+print(is_palindrome("racefar"))
+
+2---------------------------------------------------------------
+
+def prize(n):
+    if not isinstance(n, int):
+        print('Invalid input, please input an integer between 1 and 10')
+    elif n == 4 or n == 5 or n == 6:
+        print('Congratulations, you win the prize!')
+    elif n >= 1 and n <= 10:
+        print('Sorry, try again.')
+    else:
+        print('Invalid input, please input an integer between 1 and 10')
+
+prize(4.5)
+prize(4)
+prize(2)
+prize(-5)
+
+3---------------------------------------------------------------
+
+def even(x):
+    if abs(x) == (x * x) ** (1/2):
+        return True
+    else: False
+
+def odd(x):
+    if even(x) == True:
+        return False
+    else: True
+
+even(2)
+odd(2)
+
+4---------------------------------------------------------------
+
+def maximum(x):
+    test = x[0]
+    for i in range(len(x)):
+        if x[i] > test:
+            test = x[i]
+    return test
+
+maximum([1,2,3])
+
+5---------------------------------------------------------------
+
+def under_ten(x):
+    output = []
+    for i in range(len(x)):
+        if x[i] < 10:
+            output.append(x[i])
+    return output
+
+under_ten([1,4,5,10,11])
+
+6---------------------------------------------------------------
+
+def x_max(x, y):
+    output = []
+    for i in range(len(y)):
+        if y[i] < x:
+            output.append(y[i])
+    return output
+
+x_max(20, [1,4,6,10,11,17,20,21,30])
+
+7---------------------------------------------------------------
+
+def divisors(x):
+    input = x
+    output = []
+    for i in range(input):
+        if input % (i + 1) == 0:
+            output.append(i + 1)
+    return output
+
+print(divisors(18))
+
+8---------------------------------------------------------------
+
+def recursive(n):
+    lst = [1,2]
+    while len(lst) < n:
+        lst.append((2 * lst[-1]) - lst[-2])
+    return(lst[n - 1])
+
+print(recursive(3))
+
+9---------------------------------------------------------------
+
+def RPS(p1,p2):
+    if (p1 != 'rock' and p1 != 'paper' and p1 != 'scissors') or (p2 != 'rock' and p2 != 'paper' and p2 != 'scissors'):
+        return "Invalid input."
+    result = 0
+    if p1 == p2:
+        result = 0
+    elif (p1 == 'rock' and p2 == 'scissors') or (p1 == 'paper' and p2 == 'rock') or (p1 == 'scissors' and p2 == 'paper'):
+        result = 1
+    else:
+        result = 2
+    if result == 0:
+        return "Draw."
+    elif result == 1:
+        return "Player 1 wins."
+    else:
+        return "Player 2 wins."
+
+p1 = input("Player 1 move: ")
+p2 = input("Player 2 move: ")
+print(RPS(p1,p2))
+
+---------------------------------------------------------------
