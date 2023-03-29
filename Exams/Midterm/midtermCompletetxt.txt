@@ -1,0 +1,87 @@
+1----------------------------------------------------------------------
+
+def trivproduct(a, b, c):
+    if ((isinstance(a, int) or isinstance(a, float)) and (isinstance(b, int) or isinstance(b, float)) and (isinstance(c, int) or isinstance(c, float))) == True:
+        return (a * b * c)
+    else: return "Error: At least one of the inputs is neither an integer nor a float, try again."
+
+print(trivproduct(5, -10, 20.0))
+print(trivproduct(1, "blah", 5))
+
+2----------------------------------------------------------------------
+
+def greatest(lst):
+    used = []
+    for i in range(len(lst)):
+        if isinstance(lst[i], int) == True:
+            used.append(lst[i])
+    if len(used) == 0:
+        return "None"
+    largest = used[0]
+    output = used[0]
+    count = 0
+    for i in range(len(used)):
+        if used[i] > largest:
+            largest = used[i]
+    for i in range(len(used)):
+        if used[i] == largest:
+            count += 1
+    if count > 1:
+        return "None"
+    else: return largest
+
+greatest([1, 9, 10.2, 6, -2])
+greatest([1.2, 3/4, "Hello World"])
+
+3----------------------------------------------------------------------
+
+def e3(n):
+    alst = [1, 3]
+    i = 2
+    while i <= n:
+        ai = ((alst[i-1] - alst[i-2]) ** 2) / 3
+        alst.append(ai)
+        i += 1
+    return alst[n]
+
+test = [1, 5, 10, 15, 20]
+for n in test:
+    print(f"n={n}: {e3(n)}")
+
+4----------------------------------------------------------------------
+
+def same(lst):
+    bdays = []
+    for person in lst:
+        n, m, d = person
+        bday = (m, d)
+        if bday in bdays:
+            return True
+        else:
+            bdays.append(bday)
+    return False
+
+people = [('Thor', 'August',10), ('Phil Coulson','July',8),('T\'Challa','November',29),('Peter Parker','August',10), ('Tony Stark', 'March', 14)]
+print(same(people))
+distinct = [('Sponebob', 'August',10), ('Patrick','July',8),('Squidward','November',29),('Sandy','August',11), ('Mr. Krabs', 'March', 14)]
+print(same(distinct))
+
+5----------------------------------------------------------------------
+
+def replace_string(str1, str2):
+    output = ''
+    skipper = 0
+    for i in range(len(str1)):
+        if skipper > 0:
+            skipper -= 1
+            continue
+        if str1[i:i+len(str2)] == str2:
+            skipper = len(str2) - 1
+        else:
+            output += str1[i]
+    return output
+
+print(replace_string('Supercalifragilisticexpialidocious','i'))
+print(replace_string('data 3401 introduction to python for data science','data'))
+
+-----------------------------------------------------------------------
