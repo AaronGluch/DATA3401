@@ -1,0 +1,87 @@
+#Homework 4
+#Data 3401; class #26258
+#Aaron Alexaner Gluch
+#1001806336 / aag6336
+
+=============================================================================
+========#Functions Problem 1:================================================
+=============================================================================
+
+import math
+
+def gaussian(x):
+    mu = 0
+    sigma = 2
+    fx = (1/math.sqrt(2*math.pi*sigma))*math.exp(-0.5*((x-mu)/sigma)**2)
+    return fx
+
+x = 1
+print(gaussian(x))
+
+=============================================================================
+========#Functions Problem 2:================================================
+=============================================================================
+
+def is_even(x): return x % 2 == 0
+is_even(3)
+
+=============================================================================
+========#Functions Problem 3:================================================
+=============================================================================
+
+def is_prime(n):
+    is_prime = True
+    def is_divisible(n,divisor):
+        if n<(divisor-1)*divisor: return False
+        if n%divisor==0: return True
+        else:
+            divisor += 1
+            return is_divisible(n,divisor)
+    if n==2:
+        is_prime = True
+    elif is_divisible(n,divisor=2):
+        is_prime = False
+    return is_prime
+
+def get_num_primes(n):
+    user_input = int(input("Enter an integer number: "))
+    num_primes = 0
+    def count_primes(n):
+        nonlocal num_primes
+        if n <= 2:
+            return num_primes
+        else:
+            if is_prime(n-1):
+                num_primes += 1
+            return count_primes(n-1)
+    return count_primes(user_input)
+
+print(get_num_primes(13))
+
+#Functions problem 3a:
+
+def is_prime_for(n):
+    is_prime = True
+    if n == 2:
+        is_prime = True
+    else:
+        for divisor in range(2, int(n**0.5)+1):
+            if n % divisor == 0:
+                is_prime = False
+                break
+    return is_prime
+
+def get_num_primes_for(n):
+    user_input = int(input("Enter an integer number: "))
+    num_primes = 0
+    for i in range(2, user_input):
+        if is_prime_for(i):
+            num_primes += 1
+    return num_primes
+
+print(get_num_primes_for(13))
+
+#Functions problem 3b:
+#get_num_primes_for() is faster than get_num_primes().
+%timeit get_num_primes(500)
+%timeit get_num_primes_for(500)
