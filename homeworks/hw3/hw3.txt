@@ -1,0 +1,263 @@
+#Homework 3
+#Data 3401; class #26258
+#Aaron Alexaner Gluch
+#1001806336 / aag6336
+
+=============================================================================
+========#Variables Problem 3a:===============================================
+=============================================================================
+
+first, last, city = tuple(input("Enter the first name, last name, and the city of the person (comma-separated): ").replace(" ", "").lower().split(","))
+
+=============================================================================
+========#Variables Problem 3b:===============================================
+=============================================================================
+
+def dummy(i): return i if i in [0,1,2] else 'j is not in [0,1,2]'
+dummy(1.5)
+
+=============================================================================
+========#Looping Problem 1:==================================================
+=============================================================================
+
+def convertTempFor(tempVec, conversionType):
+    if conversionType == 'F2C':
+        for i in range(len(tempVec)):
+            tempVec[i] = (tempVec[i] - 32) * 5/9
+    elif conversionType == 'C2F':
+        for i in range(len(tempVec)):
+            tempVec[i] = tempVec[i] * 9/5 + 32
+    else:
+        print("Error: Invalid conversion type.")
+        return None
+    return tempVec
+
+def convertTempWhile(tempVec, conversionType):
+    i = 0
+    if conversionType == 'F2C':
+        while i < len(tempVec):
+            tempVec[i] = (tempVec[i] - 32) * 5/9
+            i += 1
+    elif conversionType == 'C2F':
+        while i < len(tempVec):
+            tempVec[i] = tempVec[i] * 9/5 + 32
+            i += 1
+    else:
+        print("Error: Invalid conversion type.")
+        return None
+    return tempVec
+
+def convertTempVec(tempVec, conversionType):
+    if conversionType == 'F2C':
+        return (np.array(tempVec) - 32) * 5/9
+    elif conversionType == 'C2F':
+        return np.array(tempVec) * 9/5 + 32
+    else:
+        print("Error: Invalid conversion type.")
+        return None
+    
+Cdegrees = [-20, -15, -10, -5, 0, 5, 10, 15, 20, 25, 30, 35, 40]
+print ('    C     F')
+i = 0
+while i < len(Cdegrees):
+    C = Cdegrees[i]
+    F = (9.0/5)*C + 32
+    print ('%5d %5.1f' % (C, F))
+    i += 1
+
+=============================================================================
+========#Looping Problem 2:==================================================
+=============================================================================
+
+numbers = list(range(10))
+print(numbers)
+
+for n in numbers:
+    i = len(numbers)//2
+    del numbers[i]
+    print ('n={}, del {}'.format(n,i), numbers)
+    
+#The loop deletes elements from the middle of the list it uses to iterate as it's iterating, and the line 
+#"i = len(numbers)//2" directs it to do so in such a manner that the 5th element in the numbers list is 8 by the time that 
+#the loop gets to the 5th iteration.
+
+=============================================================================
+========#Looping Problem 3:==================================================
+=============================================================================
+
+eps = 1.0
+while 1.0 != 1.0 + eps:
+    #print ('...............', eps)
+    eps /= 2.0
+print ('final eps:', eps)
+
+#Floating point numbers have a minimum value (in this case the code finds that it's 2.220446049250313e-16), and so
+#this is the smallest value for which floating point numbers can be incremented. If you try to increment floating point
+#numbers by a value smaller than this, it will just round to the nearest representable floating point number, which in this
+#case means that 1.0 + 1.1102230246251565e-16 is closer to 1.0 than it is to 1.0 + 2.220446049250313e-16, and so python
+#just evaluates it as 1.0.
+
+=============================================================================
+========#Looping Problem 4:==================================================
+=============================================================================
+
+#from math import sqrt
+#for n in range(1, 60):
+#    r_org = 2.0
+#    r = r_org
+#    for i in range(n):
+#        r = sqrt(r)
+#    for i in range(n):
+#        r = r ** 2
+#    print ('With {} times sqrt and then {} times **2, the number {} becomes: {:.16f}'.format(n,n,r_org,r))
+
+#The smallest representable floating point number is 2.220446049250313e-16, and all representable floating point numbers 
+#are thus some multiple of 2.220446049250313e-16, and anything more precise will thus be rounded to the nearest multiple. 
+#of 2.220446049250313e-16. As 2 it taken to smaller and smaller roots, more and more digits are rounded off, and so 
+#applying the inverse operations of the rounded numbers produces greater and greater absolute deviations from 2, until the 
+#nth root of 2 is closer to 1.0 than it is to 1.0 + 2.220446049250313e-16, at which point the nth root of 2 rounds to 1, 
+#and 1 taken to any power is 1.
+
+=============================================================================
+========#Looping Problem 5:==================================================
+=============================================================================
+
+#Looping problem 5a:
+
+from time import process_time
+
+def fib():
+    total_time = 0
+    num_calls = 0
+    def getFib(n):
+        nonlocal total_time
+        nonlocal num_calls
+        start = process_time()
+        if n == 0:
+            result = 0
+        elif n == 1:
+            result = 1
+        else: 
+            result = getFib(n-1) + getFib(n-2)
+        end = process_time()
+        total_time += end - start
+        num_calls += 1
+        return(result)
+    while True:
+        val = input("Please enter a non-negative integer or type stop: ")
+        if val == "stop":
+            break
+        try:
+            n = int(val)
+        except:
+            print("Invalid input")
+            continue
+        if n < 0:
+            print("Invalid input")
+            continue
+        print("fib({}) = {}".format(n, getFib(n)))
+        if num_calls > 0:
+            print("average runtime: {} seconds".format(total_time / num_calls))
+            
+fib()
+
+#Looping problem 5b:
+
+from time import process_time
+
+def fibLoop():
+    total_time = 0
+    num_calls = 0
+    def getFib(n):
+        nonlocal total_time
+        nonlocal num_calls
+        start = process_time()
+        if n == 0:
+            result = 0
+        elif n == 1:
+            result = 1
+        else: 
+            a = 0 
+            b = 1 
+            for i in range(2, n + 1):
+                result = a + b 
+                a = b 
+                b = result 
+        end = process_time()
+        total_time += end - start
+        num_calls += 1
+        return(result)
+    while True:
+        val = input("Please enter a non-negative integer or type stop: ")
+        if val == "stop":
+            break
+        try:
+            n = int(val)
+        except:
+            print("Invalid input")
+            continue
+        if n < 0:
+            print("Invalid input")
+            continue
+        print("fib({}) = {}".format(n, getFib(n)))
+        if num_calls > 0:
+            print("average runtime: {} seconds".format(total_time / num_calls))
+
+#Looping problem 5c:
+
+#Performance for both functions with those inputs was as follows:
+
+#fib()
+#Please enter a non-negative integer or type stop: 10
+#fib(10) = 55
+#average runtime: 2.1319079096045262e-05 seconds
+#Please enter a non-negative integer or type stop: 15
+#fib(15) = 610
+#average runtime: 3.217708558139545e-05 seconds
+#Please enter a non-negative integer or type stop: 
+#20fib(20) = 6765
+#average runtime: 3.881258046670306e-05 seconds
+#Please enter a non-negative integer or type stop: 25
+#fib(25) = 75025
+#average runtime: 4.353055695471993e-05 seconds
+#Please enter a non-negative integer or type stop: 30
+#fib(30) = 832040
+#average runtime: 5.599022154667144e-05 seconds
+#Please enter a non-negative integer or type stop: 35
+#fib(35) = 9227465
+#average runtime: 6.715631133382023e-05 seconds
+
+#fibLoop()
+#Please enter a non-negative integer or type stop: 10
+#fib(10) = 55
+#average runtime: 1.968700000000434e-05 seconds
+#Please enter a non-negative integer or type stop: 15
+#fib(15) = 610
+#average runtime: 1.8200500000002673e-05 seconds
+#Please enter a non-negative integer or type stop: 20
+#fib(20) = 6765
+#average runtime: 1.6861333333333117e-05 seconds
+#Please enter a non-negative integer or type stop: 25
+#fib(25) = 75025
+#average runtime: 1.68622499999993e-05 seconds
+#Please enter a non-negative integer or type stop: 30
+#fib(30) = 832040
+#average runtime: 1.6613799999999624e-05 seconds
+#Please enter a non-negative integer or type stop: 35
+#fib(35) = 9227465
+#average runtime: 1.660383333333219e-05 seconds
+
+#So, fibLoop() was definitely faster and more efficient than fib(). Why I think this is, is that fib() uses recursion, 
+#which means it repeatedly calls itself with increasingly-smaller arguments until it reaches a base case. This creates lots 
+#of overhead in terms of time & memory, as each recursive call needs to be stored until the result is returned.
+
+=============================================================================
+========#Looping Problem 6:==================================================
+=============================================================================
+
+q = [['a', 'b', 'c'], ['d', 'e', 'f'], ['g', 'h']]
+s = ""
+for i in range(len(q)):
+    for j in range(len(q[i])):
+        s += q[i][j]
+print(s)
