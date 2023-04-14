@@ -1,0 +1,277 @@
+#Homework 2
+#Data 3401; class #26258
+#Aaron Alexaner Gluch
+#1001806336 / aag6336
+
+=============================================================================
+========#Values Problem 1:===================================================
+=============================================================================
+
+#Think about what the results would be for the following expressions, and then type them into the terminal to verify your answers. Briefly explain the results for each one:
+#>> 1\2 
+# I don't think that "\" is an operator, I think this will give an error.
+#>> 1/2
+# 0.5; simple division operator
+#>> int8(1/2)
+# 0; Casting a double or float to an integer will drop everything after the decimal, so 0
+#>> int8(1/3)
+# 0; Casting a double or float to an integer will drop everything after the decimal, so 0
+#>> -5^2  
+# -7; "^" is python's exclusive binary OR operator, which has lower presence than multiplication, meaning that "-7" first becomes the actual integer -7. From there, the binary XOR operator applies the exclusive OR logic gate to every digit of the binary form of its inputs to get the binary form of the output. 7 in binary is 10000000000000000000000000000101, while 2 in binary is 00000000000000000000000000000010, meaning that the result of the binary XOR calculation is 10000000000000000000000000000111, which is equal to -7.
+#>> -5**2  
+# -25; "**" is python's exponent operator, which comes earlier in the order of operations than multiplication ("-5" is considered to be a multiplication operation rather than a single integer), so the square of 5 is evaluated first before being multiplied by -1, and so the final result is -25.
+#>> (-5) ^ 2 
+# -7; the parentheses make no difference here, as multiplication is earlier in the order of operations
+#>> (-5) ** 2 
+# 25; The parentheses cause "-5" to be evaluated as a signle integer prior to applying the exponent, with -5 to the power of 2 being 25.
+#>> 10-6/2 
+# 7; python follows the common core order of operations rather than evaluating left to right.
+#>> 5*4/2*3
+# 30; python follows the common core order of operations, under which multiplication and division are the same operator given the same priority, with left to right being the tiebreaker.
+
+=============================================================================
+========#Values Problem 2:===================================================
+=============================================================================
+
+#Overflow. What would happen if you went beyond the range for a particular type? For example, the largest integer that can be stored in int8 is 127, and the smallest integer is -128, so what would happen if we type cast a larger integer to the type int8? Smaller integer? Use the MATLAB built-in functions intmin and intmax or Python’s numpy package command iinfo to find the largest and smallest integers that can be stored in int16 and int32:
+import numpy as np
+print(np.iinfo(np.int16)) #minimum: -32768; maximum: 32767
+print(np.iinfo(np.int32)) #minimum: -2147483648; maximum: 2147483647
+
+#For int N, the last N digits are taken from the full-precision form of the number and then converted back to base 10 form:
+#Let's consider the simpler case of 'int3'. As out integer inputs ascend from 0 to 9, the following happens:
+#0 0000 000 0
+#1 0001 001 1
+#2 0010 010 2
+#3 0011 011 3
+#4 0100 100 -4
+#5 0101 101 -3
+#6 0110 110 -2
+#7 0111 111 -1
+#8 1000 000 0
+#9 1001 001 1
+#Thus, as inputs increment by 1, outputs will endlessly loop through the list [0,1,2,3,-4,-3,-2,-1] 
+#(the left-most digit of the truncated indicates that -4 is added, while the middle digit still adds 2 and right adds 1;
+#in 'int4', the left-most digit adds -8 and so on)
+
+=============================================================================
+========#Variables Problem 1:================================================
+=============================================================================
+
+#Type the following in the command window and submit the results. Briefly explain what each assignment does.
+#a = 1         #Assigns the integer value 1 to the variable a
+#b = 'x'       #assigns the string 'x' to the variable b
+#c = true      #Unless there is another variable called "true", this will be a name error. Should be "True" to assign the boolean value.
+#whos a b c    #I don't even know what this is trying to do. There's no such command. It evaluates as a syntax error.
+#a == c        #would return True if c were assigned to be True, but it never even evaluates, as the name error of the c assignment comes first.
+#a + c         #returns 2, as booleans True/False values are stored as 1/0
+#d = [1 2 3 4] #syntax error; it can't evaluate as a list of integers, as there are no commas, and it can't be a list containing only the string '1 2 3 4' as there are no ''/"" quotes.
+#e = ['a' 'b' 'c' 'd'] #Another syntax error; there are no commas.
+#f = ['a','b','c','d'] #Assigns a list of strings ['a','b','c','d'] to variable f.
+#g = ['abcd']          #Assigns a list containing only the string 'abcd' to variable g.
+#h = {‘a’ ‘b’ ‘c’ ‘d’} #raises a syntax error because the curly quotes are not valid in Python, also no commas.
+#i = { a b c d}        #multiple things wrong with this; multiple undefined variables which would raise a name error if everything else was dealt with, no quotes to make them valid elements / turn them into a single element, no commas to separate elements.
+#whos d e f g h i      #same issues as "whos a b c" from earlier
+#class(a)      #There is no such function in python. Should use type(a) is trying to get the type of an object.
+#type(a)       #returns int, as a is 1 and 1 is an integer and the function returns the type of the argument passed to it.
+#True          #returns boolean True
+#true          #raises a name error as there is no pre-defined variable "true", and "True" is the boolean.
+#False         #returns boolean False
+#false         #raises a name error as there is no pre-defined variable "false", and "False" is the boolean.
+
+=============================================================================
+========#Variables Problem 2:================================================
+=============================================================================
+
+#Run the following Python statements and briefly explain why you get the behavior displayed by the print functions:
+#a = 5                     #assigns the value 5 to the variable a
+#b = a                     #assigns the value of a (which is 5) to variable b
+#print (id(a), id(b))      #Prints the memory addresses of the variables a and b. They both have the same value (5), so they are stored in the same memory location.
+ 
+#c = b                     #assigns the value of b (which chronologically, was 5) to variable c
+#b = 3                     #changes the value of b to 3
+#print (a,b,c)             #prints "5 3 5"
+#print (id(a),id(b),id(c)) #prints the memory addresses of the variables a, b, and c. a and c both hav ethe same value (5), so they are stored in the same memory location.
+ 
+#b = a                     #changes the value of b back to a (which is 5)
+#b = 5                     #assigns the value of 5 to variable b, which does nothing since b was already assigned this value.
+#print (id(a), id(b))      #Prints the memory addresses of the variables a and b. They both have the same value (5), so they are stored in the same memory location.
+
+=============================================================================
+========#Variables Problem 4:================================================
+=============================================================================
+
+#1a = 2 is invalid because variable names cannot start with a number.
+#a1 = b is invalid because b is not defined (throws name error).
+#x = 2 no error.
+#y = X + 4 # is it 6?     #invalid because x is defined, not X. Throws name error, as python is case sensitive.
+#from Math import tan     #invalid because module names are case-sensitive.
+#print tan(pi)            #functions require parentheses in order to recognize their arguments. Print is not an operator.
+#pi = "3.14159’           #mixes quote types, thereby preventing python from recognizing 9 as the end of the string.
+#print (tan(pi))          #Even if the prior problem were fixed, this would still be invalid because tan can't operate on strings. Should be cast to float.
+#c = 4**3**2**3           #This is valid, but may not do what most people expect; xpect. Python evaluates exponents right to left, so this is 4**(3**(2**3))
+#_ = ((c-78564)/c + 32))  #This is invalid because there is an extra closing parenthesis, which should either be removed or have its counterpart added.
+#discount = 12%           #% is a modulo operator and doesn't have the other operator needed to work properly. Should either use an actual value like .12 or a string like "12%" or have its second argument added.
+#AMOUNT = 120.-           # - only evaluates as multiplication if it comes on the left, and so this isn't an actual numeric value. Needs either quotation marks, the - removed, or the - moved to the left.
+#amount = 120$            # $ is not a valid part of a numeric value. Needs quotation marks or the $ removed.
+#address = hpl@simula.no  # Needs quotation marks added.
+#and = duck               #needs either quotation marks added around duck, or needs the variable duck to be defined. Throws name error.
+#class = ’INF1100, gr 2"  #inconsistent quotes once again.
+#continue_ = x > 0        #this is valid, evaluates as True, which then gets assigned to the variable continue_.
+#rev = fox = True         #this is valid; assigns True to variables rev and fox.
+#Persian = ['a human language']  #this is valid; assigns a list to the variable Persian which contains only the string 'a human language' as its sole element.
+#true = fox is rev in Persian    #is operator checks if the two values are the same object, which is true of fox and rev given that they're both the boolean True. This then evaluates as True in Persian. The operator "in" checks if the boolean True is in the list contained in the variable Persian, which is not the case, and so the final result evaluates as false.
+
+=============================================================================
+========#Variables Problem 5:================================================
+=============================================================================
+
+#One syntax error was the use of a semicolon instead of a colon at the end of the second line, which raises a syntax error, as it expects a colon to indicate the start of a block statement.
+#One runtime error came from trying to divide by zero in the last line.
+#One semantic error came from using the cmath module to calculate the square root of -15. This is problematic, as the cmath module always returns complex numbers. The math module should've been used.
+
+#!/usr/bin/env python3
+
+_life_expectancy = 120
+print('\nThe life expectancy for the millennials is projected to be {} years! (But don\'t believe it...)\n'.format(_life_expectancy))
+
+print("""\nA recent study published in the journal of Nature, discovered that over the past century,
+although life expectancy has significantly increased due to technological advances,
+the maximum life span of the oldest people in the world has not changed much.\n""")
+
+from math import sqrt as msqrt # math function always work with and return real numbers
+from cmath import sqrt as csqrt # cmath function always return complex numbers
+print ("""
+Cardano was the first to introduce complex numbers of the form a + sqrt(-b) into algebra, but he had misgivings about it.
+In his solution to an algebra equation, he encountered the solution 5 + sqrt(-15) for the unknown, which is now mathematically represented by
+
+       {}
+
+in Python, which can also be obtained as the addition of real and imaginary numbers in Python like this
+
+
+      5 + sqrt(-15) = {},
+
+      which can also be manually stated as
+
+
+      {}\n
+""" % (5+csqrt(-15), complex(5,-15), complex(5,-15)))
+
+print('''
+
+One final note:
+
+        In python the sqrt function from math and cmath modules are different.
+        The sqrt function that returns "float" results is sqrt from the math module.
+        Therefore, if using the math module, then,
+
+                sqrt(25) = {:.4f},
+
+        which is a float (real number).\n
+''' .format(msqrt(25)) 
+)
+
+try:
+    print('''
+
+    Also note that by convention, 0**0 = {} in Python.
+    And division by 0, will give you a runtime exception: 1/0 = {}
+
+    ''' .format(0**0, 1/0) 
+    )
+except ZeroDivisionError:
+    print("Division by zero is not allowed.")
+
+=============================================================================
+========#Variables Problem 6:================================================
+=============================================================================
+
+import math
+
+def time_to_cook(M,T0,Tw,Ty):
+    p = 1.038
+    c = 3.7
+    K = 5.3e-3
+    t = (M**(2/3)*c*p**(1/3))/(K*math.pi**2*(4*math.pi/3)**(2/3))*math.log(0.76*((T0-Tw)/(Ty-Tw)))
+    return(t)
+
+Tw = 100
+Ty = 70
+
+M = 67
+T0 = 4
+t_fridge = time_to_cook(M,T0,Tw,Ty)
+print('Time to cook a large egg from the fridge: ' + str(round(t_fridge,2)) + ' seconds')
+
+T0 = 20
+t_room = time_to_cook(M,T0,Tw,Ty)
+print('Time to cook a large egg from room temperature: ' + str(round(t_room,2)) + ' seconds')
+
+=============================================================================
+========#Variables Problem 7:================================================
+=============================================================================
+
+names = ['Christian-Andrew Bagby-wright','Matthew Chrysler','Niyousha Davachi','Pauline Dredger','Marcos Guillen','Lauren Kuffel','Shashank Kumbhare','Hany Mahdy','Sarah Moorman','Andrew Myers','Joshua Osborne','Rebecca Proni','Amir Shahmoradi','Carolina Vedovato']
+
+# Define a function that takes a list of names and returns a dictionary of names and roles
+def dict(names):
+    class_dict = {}
+    max_len = max([len(names[i-1]) for i in range(len(names))])
+    for i in range(len(names)):
+        if names[i-1] == 'Amir Shahmoradi':
+            class_dict[names[i-1]] = 'instructor'
+        else: class_dict[names[i-1]] = 'student'
+    return class_dict
+
+# Call the function with the names list and assign the result to class_dict
+class_dict = dict(names)
+
+# Print the class_dict with formatting
+print('class_dict  = {')
+for i in range(len(names)):
+    spaces = ' ' * (max_len - len(names[i-1]))
+    print("            , '" + names[i-1] + "'" + spaces + " : '" + class_dict[names[i-1]] + "'")
+print('            }')
+
+=============================================================================
+========#Variables Problem 8:================================================
+=============================================================================
+
+#!/usr/bin/env python3
+
+import sys
+import os
+import string
+
+output = f"This is Python version {sys.version.split()[0]}"
+output += os.linesep
+sentence = "Python is the best language for String manipulation!"
+output += sentence
+output += os.linesep
+output += sentence[::-1]
+output += os.linesep
+words = sentence.split()
+pig_latin_words = []
+for word in words:
+    if word[-1] == "!":
+        word = word[:-1]
+    first_letter = word[0]
+    rest_of_word = word[1:]
+    pig_latin_word = rest_of_word + first_letter + "ay"
+    pig_latin_words.append(pig_latin_word)
+pig_latin_sentence = " ".join(pig_latin_words) + "!"
+output += pig_latin_sentence
+output += os.linesep
+output += sentence.swapcase()
+output += os.linesep
+a_count = sentence.count("a")
+A_count = sentence.count("A")
+output += f"The sentence '{sentence}' contains \n{a_count} 'a' letters, and\n{A_count} 'A' letters!"
+output += os.linesep
+for word in words:
+    output += word + os.linesep
+output += os.linesep
+for word in words:
+    output += word.upper() + os.linesep
+print(output)
