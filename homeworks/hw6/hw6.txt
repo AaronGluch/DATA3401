@@ -1,0 +1,129 @@
+Homework 6
+#Data 3401; class #26258
+#Aaron Alexaner Gluch
+#1001806336 / aag6336
+
+=============================================================================
+========#Exercise 1:=========================================================
+=============================================================================
+
+with open("wdbc.names", "r") as f:
+    print(f.read())
+    
+cols = ["id", "diagnosis"]
+features = ["radius", "texture", "perimeter", "area", "smoothness", "compactness", "concavity", "concave_points", "symmetry", "fractal_dimension"]
+for rt in ["mean", "se", "worst"]:
+    for feature in features:
+        cols.append(rt + "_" + feature)
+
+data = pd.read_csv("wdbc.data", header=None, names=cols)
+
+=============================================================================
+========#Exercise 2:=========================================================
+=============================================================================
+
+#1. Display the data header:
+print(data.head())
+#2. The standard errors of the patients' features probably aren't very useful.
+#3. Benign = 0, Malignant = 1
+data["diagnosis"] = data["diagnosis"].replace({"B": 0, "M": 1})
+labels = data['diagnosis'].to_list()
+print(labels)
+
+=============================================================================
+========#Exercise 3:=========================================================
+=============================================================================
+
+import numpy as np
+import matplotlib
+from matplotlib import pyplot as plt
+from sklearn.decomposition import PCA
+
+# you may need to run  pip install sklearn in Ubuntu  (may need pip3)
+#from sklearn.decomposition import PCA
+#import matplotlib
+#from matplotlib import pyplot as plt
+
+#plt.figure()
+#PCA3=PCA(n_components=2)
+#XPCA = PCA3.fit_transform(x)
+#plt.plot(XPCA[y==0,0],XPCA[y==0,1],'g.')
+#plt.plot(XPCA[y==1,0],XPCA[y==1,1],'r.')
+#plt.show()
+
+# you may need to run  pip install sklearn in Ubuntu  (may need pip3)
+#1
+data.plot.scatter(x="mean_radius", y="mean_area", c=labels, colormap="bwr")
+plt.title("Mean Radius vs Mean Area")
+plt.show()
+
+data.plot.scatter(x="mean_radius", y="mean_texture", c=labels, colormap="bwr")
+plt.title("Mean Radius vs Mean Texture")
+plt.show()
+
+data.plot.scatter(x="mean_radius", y="mean_smoothness", c=labels, colormap="bwr")
+plt.title("Mean Radius vs Mean Smoothness")
+plt.show()
+
+data.plot.scatter(x="mean_radius", y="mean_perimeter", c=labels, colormap="bwr")
+plt.title("Mean Radius vs Mean Perimeter")
+plt.show()
+
+data.plot.scatter(x="mean_radius", y="mean_concavity", c=labels, colormap="bwr")
+plt.title("Mean Radius vs Mean Concavity")
+plt.show()
+#2
+from pandas.plotting import scatter_matrix
+scatter_matrix(data, c=labels, figsize=(15,15), diagonal="kde", cmap="bwr")
+plt.suptitle("Scatter Matrix of Features")
+plt.show()
+#3
+x = data.to_numpy()
+y = np.array(labels)
+#4
+pca = PCA(n_components=4)
+x_pca = pca.fit_transform(x)
+
+plt.figure()
+PCA3=PCA(n_components=2)
+XPCA = PCA3.fit_transform(x)
+plt.plot(XPCA[y==0,0],XPCA[y==0,1],'g.')
+plt.plot(XPCA[y==1,0],XPCA[y==1,1],'r.')
+plt.show()
+#5
+#The principal components should be more successful at classifying tumors as benign or malignant. The first principal 
+#component is the linear combination of the dataset's variables which is able to explain the largest mathematically 
+#possible amount of variance in the dataset, as is true of the second PC with respects to the residual matrix you get 
+#when you partial the first principal component from the correlation matrix. Thus, we should expect the principal
+#components to be the best predictors of the average variable, and we should especially expect the principal components
+#to be the best predictors of malignancy given that malignancy is causal for all features. Scatterplots of principal
+#components are also just easier to interpret.
+
+=============================================================================
+========#Exercise 4:=========================================================
+=============================================================================
+
+#2
+with open("adult.names", "r") as f:
+    print(f.read())
+#The attributes have different data types (nominal, ordinal, continuous, discrete).
+#Missing values are indicated by "?".
+#3
+import pandas as pd
+columns = ["age", "workclass", "fnlwgt", "education", "education-num", "marital-status", "occupation", "relationship", "race", "sex", "capital-gain", "capital-loss", "hours-per-week", "native-country", "income"]
+df = pd.read_csv("adult.data", header=None, names=columns)
+print(df.head())
+#4
+df = df.drop("fnlwgt", axis=1)
+#5
+df.hist(column="workclass", by="income", figsize=(10, 10))
+plt.suptitle("Income | Class")
+#6
+df.hist(column="education", by="income", figsize=(10, 10))
+plt.suptitle("Income | Education")
+#7
+df.hist(column="occupation", by="income", figsize=(10, 10))
+plt.suptitle("Income | Occupation")
+#8
+#Those who are more educated tend to have higher incomes, those employed in the private sector make more, and people
+#in executive/managerial positions make more.
