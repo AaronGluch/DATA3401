@@ -1,0 +1,211 @@
+Final Exam
+#Data 3401; class #26258
+#Aaron Alexaner Gluch
+#1001806336 / aag6336
+
+=============================================================================
+========#Exercise 1:=========================================================
+=============================================================================
+
+## Write your code here
+#1:
+#with open("abalone.names", "r") as f:
+#    print(f.read())
+#
+#2:
+import pandas as pd
+df = pd.read_csv('abalone.data', header=None)
+print(df.head())
+#3:
+header = ['Sex', 'Length', 'Diameter', 'Height', 'Whole weight', 'Shucked weight', 'Viscera weight', 'Shell weight', 'Rings']
+df.columns = header
+#4:
+labels = df['Rings']
+#4.A:
+print(labels.value_counts())
+import matplotlib.pyplot as plt
+labels.hist(bins=29)
+plt.show()
+#4.B:
+#The value counts are not uniform, but are rather a gaussian with right skew. 
+#4.C:
+#I would've liked to have left it unmodified, but given the need to change it, I've chosen to make it approximately
+#uniform via the following procedure: Add the value counts of ring classes 1, 2, 3, etc until the addition of the nth
+#class brings the total higher than 689 (the highest value count of any individual class) or greater; from there, classes
+#1,2,3,...,n-1 are lumped together into the same label, and class n is added as well if doing so brings the total closer
+#to 689, then repeat with the next n unassigned ring classes.. The result is that classes 1-7 become label 1, 
+#classes 8-10 become labels 2-4, classes 11 & 12 become label 5, classes 13-25 bcome label 6, and classes 26-29 became
+#label 7. However, I made an exception and lumped labels 6 & 7 together because the value count of label 7 was
+#sufficiently miniscule that lumping 6 & 7 produced a label 6 whose value count was at least half as close to 689 as was 
+#the label (1) with the highest value count (839). To implement the changes, I used the following code:
+
+valueList = sorted(set(df['Rings'])) #In ascending order, create a list of all unique values that appear in df['Rings']
+valueDict = {} #Create a dictionary which maps each unique value to the value count of that value:
+for i in range(len(valueList)):
+    valueDict[valueList[i]] = labels.value_counts()[valueList[i]]
+
+labelDict = {} #Create a new dictionary which aims to map old label values to new label values:
+v = 0
+l = 0
+m = 0
+for i in range(len(valueList)): #Sets m to the individual ring value with the highest value count:
+    if valueDict[valueList[i]] > m:
+        m = valueDict[valueList[i]]
+for i in range(len(valueList)): #Logic workhorse: Adds the counts of the smallest values from valueList to v until v stops 
+    if abs((v + valueDict[valueList[i]]) - m) > abs(v - m): #growing (prior to which, values from valueList are assigned 
+        l += 1                                              #new label values according to l), at which point v is set back 
+        labelDict[valueList[i]] = l                         #to zero and l is incremented by 1 such that subsequent values 
+        v = 0                                               #from valueList are no longer assigned to the prior label.
+    else:
+        labelDict[valueList[i]] = l
+    v += valueDict[valueList[i]]
+labelList = [] #In ascending order, fetches the list of new labels:
+for i in range(len(valueList)):
+    labelList += [labelDict[valueList[i]]]
+labelList = sorted(set(labelList)) #finished fetching list of new labels.
+l = 0 #Figures out which of the new labels has the highest value count and sets l to its value count:
+v = 0
+for i in range(len(labelList)):
+    for j in range(len(valueList)):
+        if labelDict[valueList[j]] == i:
+            v += valueDict[valueList[j]]
+    if abs(v - m) > abs(l - m):
+        l = v
+    v = 0
+for i in range(len(valueList)): #Figures out the value count of the new label which appears last in labelList and sets
+    if labelDict[valueList[i]] == max(labelList): #(continued) v to this value count.
+        v += valueDict[valueList[i]]
+if v < abs(l - m): #Unless v is large enough that adding its value count to the value count of the second to last label
+    for i in range(len(valueList)): #in labellist, all old labels mapped to the last label in labelList are re-mapped to
+        if labelDict[valueList[i]] == max(labelList): #the second to last label in labelList
+            labelDict[valueList[i]] = labelList[-2]
+
+for i in range(4177): #Change the values in labels according to the dictionary:
+    labels[i] = labelDict[labels[i]]
+
+df['Rings'] = labels  #Replace rings with the new values of labels:
+labels2 = df['Rings'] #Create a second labels object just to test that the dataframe really changed:
+#4.D:
+print(labels2.value_counts())
+#5:
+from pandas.plotting import scatter_matrix
+scatter_matrix(df, c=df['Rings'], figsize=(15,15), diagonal="kde", cmap="bwr")
+plt.suptitle("Scatter Matrix of Features")
+plt.show()
+#Ring count seems to increase with length, diameter, height, whole weight, shucked weight, viscera weight, and shell
+#weight; consequently, all variables increase with each other, although slopes differ and some are linear and some are
+#non-linear, and slopes differ in whether they curve upwards or downwards.
+
+=============================================================================
+========#Exercise 2:=========================================================
+=============================================================================
+
+## Write your code here
+import random
+import matplotlib.pyplot as plt
+
+#1
+def RandomWalk(num_steps, start_position):
+    position = start_position
+    for i in range(num_steps):
+        coin = random.choice([1, 0])
+        position -= 1
+        if coin == 1:
+            position += 2
+    return position
+
+#2
+def SimulateRandomWalk(num_sims, num_steps, start_position):
+    walks = []
+    for i in range(num_sims):
+        walk = RandomWalk(num_steps, start_position)
+        walks.append(walk)
+    return walks
+
+#3
+sim = SimulateRandomWalk(num_sims = 10000, num_steps = 100, start_position = 0)
+plt.hist(final_positions_100, bins = 20)
+plt.show()
+
+#4
+sim1k = SimulateRandomWalk(num_sims = 10000, num_steps = 1000, start_position = 0)
+plt.hist(sim1k, bins = 20)
+plt.show()
+
+sim5k = SimulateRandomWalk(num_sims = 10000, num_steps = 5000, start_position = 0)
+plt.hist(sim5k, bins = 20)
+plt.show()
+
+=============================================================================
+========#Exercise 3:=========================================================
+=============================================================================
+
+#1
+class ProjLocX():
+    def __init__(self, velInitX):
+        self.velInitX = velInitX
+
+    def getLocX(self, time):
+        """
+        Return the location of the projectile at the specific given `time` and initial velocity.
+        Input
+            time    :   An input real (float) representing the time
+                        past since the start of the projectile motion.
+        """
+        return self.velInitX * time
+
+#2
+class ProjLocXY(ProjLocX, ProjLocY):
+    def __init__(self, velInitX, velInitY, g = 9.8):
+        ProjLocX.__init__(self, velInitX)
+        ProjLocY.__init__(self, velInitY, g)
+
+#3
+    def evaluate(self, time):
+        return (self.getLocX(time), self.getLocY(time))
+
+#4
+proj = ProjLocXY(10, 10)
+loc = proj.evaluate(1)
+print(loc)
+
+=============================================================================
+========#Bonus Exercise:=====================================================
+=============================================================================
+
+## Write your code here
+import math
+import numpy as np
+import matplotlib.pyplot as plt
+
+principal = 0.01
+rate = 0.05
+
+#A: Compound Interest:
+
+#1
+time = np.arange(0, 1001)
+#2
+moneyC = principal * (math.e **(time * rate))
+#3
+plt.plot(time, moneyC)
+plt.show()
+
+#B: Simple Interest:
+
+#1
+time = np.arange(0, 1001)
+#2
+moneyS = principal * (1 + (rate * time))
+#3
+plt.plot(time, moneyS)
+plt.show()
+
+#C: Difference:
+D = moneyC - moneyS
+plt.plot(time, moneyC - moneyS)
+plt.show()
+
+#D: Conclusion:
+#An investment with simple interest can't make meaningful gains without meaningful starting capital while compound
+#interest can get away with a lot more.
