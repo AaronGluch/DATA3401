@@ -14,4 +14,6 @@
 
 **homework 5**: 10/10
 
+**Final Exam**: 90/60
+
 
